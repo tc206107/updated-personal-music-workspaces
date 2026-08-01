@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TangCheee 鈥?绠＄悊椤?/title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    body { padding: 0 96px; }
+    .admin-wrap { max-width: 980px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+    .admin-login { max-width: 420px; margin: 4rem auto; padding: 2.4rem 2rem; border: 1px solid var(--gold-dim); background: var(--panel); text-align: center; }
+    .admin-login input { width: 100%; margin: 1rem 0 .9rem; padding: .6rem .8rem; background: var(--ink); color: var(--text); border: 1px solid var(--gold-dim); font-family: var(--mono); }
+    .admin-login button, .admin-btn { padding: .55rem 1.1rem; background: transparent; color: var(--gold-bright); border: 1px solid var(--gold-dim); font-size: .82rem; letter-spacing: .18em; cursor: pointer; transition: all .25s var(--ease); font-family: var(--serif); }
+    .admin-login button:hover, .admin-btn:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+    .admin-login p { color: var(--muted); font-size: .8rem; margin: 0; }
+    .admin-err { color: var(--red); font-size: .82rem; min-height: 1.2em; }
+    .admin-toolbar { display: flex; flex-wrap: wrap; gap: .7rem; align-items: center; margin: 0 0 1.6rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(201,162,94,.3); }
+    .admin-status { font-family: var(--mono); font-size: .72rem; color: var(--muted); }
+    .work-editor { border: 1px solid var(--gold-dim); padding: 1.2rem 1.1rem; margin: 0 0 1.4rem; background: linear-gradient(180deg, var(--panel-2), var(--panel)); position: relative; }
+    .work-editor::before { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(201,162,94,.25); pointer-events: none; }
+    .work-editor h3 { margin: 0 0 1rem; font-weight: 400; letter-spacing: .2em; color: var(--parchment); font-size: 1rem; }
+    .field-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .7rem; }
+    .field { display: flex; flex-direction: column; gap: .25rem; }
+    .field label { font-family: var(--mono); font-size: .66rem; letter-spacing: .12em; color: var(--gold); }
+    .field input, .field textarea { background: var(--ink); color: var(--text); border: 1px solid var(--gold-dim); padding: .45rem .6rem; font-size: .86rem; font-family: var(--serif); width: 100%; }
+    .field textarea { resize: vertical; min-height: 58px; font-family: var(--mono); font-size: .74rem; }
+    .field-wide { grid-column: 1 / -1; }
+    .work-actions { display: flex; gap: .6rem; margin-top: .9rem; flex-wrap: wrap; }
+    .admin-btn.danger { border-color: var(--red); color: var(--red); }
+    .admin-btn.danger:hover { background: var(--red); color: var(--ink); }
+    .admin-btn.small { padding: .32rem .7rem; font-size: .72rem; }
+    .upload-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: .7rem; font-family: var(--mono); font-size: .72rem; color: var(--muted); }
+    .upload-row input[type="file"] { color: var(--muted); font-size: .72rem; }
+    .contact-editor { border: 1px solid var(--gold-dim); padding: 1.1rem; background: var(--panel); margin-bottom: 1.4rem; }
+    .contact-editor h3 { margin: 0 0 .7rem; font-weight: 400; letter-spacing: .2em; font-size: 1rem; color: var(--parchment); }
+    .contact-editor textarea { width: 100%; min-height: 120px; background: var(--ink); color: var(--text); border: 1px solid var(--gold-dim); padding: .6rem; font-size: .86rem; line-height: 1.9; }
+    .admin-note { color: var(--muted); font-size: .78rem; line-height: 1.9; margin-top: 1.4rem; }
+    .pwd-dialog { margin-top: .8rem; display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; }
+    .pwd-dialog input { background: var(--ink); color: var(--text); border: 1px solid var(--gold-dim); padding: .45rem .6rem; }
+    @media (max-width: 760px) { body { padding: 0 8px; } }
+  </style>
+</head>
+<body>
+  <div class="side-rail side-rail-left" aria-hidden="true"></div>
+  <div class="side-rail side-rail-right" aria-hidden="true"></div>
+  <div class="ornament-band" aria-hidden="true"></div>
+
+  <main class="admin-wrap">
+    <section class="admin-login" id="loginBox">
+      <h1 style="font-family:var(--title-font);font-weight:400;letter-spacing:.2em;color:var(--parchment);margin:0 0 1rem;">绠＄悊</h1>
+      <input type="password" id="pwdInput" placeholder="瀵嗙爜" autocomplete="current-password">
+      <button id="loginBtn" type="button">杩涘叆</button>
+      <p class="admin-err" id="loginErr"></p>
+      <p>榛樿瀵嗙爜瑙?README.md锛岀櫥褰曞悗鍙湪銆屼慨鏀瑰瘑鐮併€嶄腑鏇存崲銆?/p>
+    </section>
+
+    <section id="editorBox" hidden>
+      <div class="admin-toolbar">
+        <button class="admin-btn" id="pickDirBtn" type="button">閫夋嫨绔欑偣鏂囦欢澶?/button>
+        <button class="admin-btn" id="saveBtn" type="button">淇濆瓨鍒版枃浠跺す</button>
+        <button class="admin-btn" id="downloadBtn" type="button">涓嬭浇 works.js</button>
+        <button class="admin-btn" id="addWorkBtn" type="button">鏂板浣滃搧</button>
+        <button class="admin-btn" id="pwdBtn" type="button">淇敼瀵嗙爜</button>
+        <span class="admin-status" id="statusText">鏈繛鎺ユ枃浠跺す锛堜繚瀛樺皢浣跨敤涓嬭浇鏂瑰紡锛?/span>
+      </div>
+
+      <div id="worksList"></div>
+
+      <div class="contact-editor">
+        <h3>鑱旂郴鏂瑰紡锛堟瘡琛屼竴鏉★級</h3>
+        <textarea id="contactText"></textarea>
+      </div>
+
+      <p class="admin-note">
+        璇存槑锛氱櫥褰曞瘑鐮佸彧淇濇姢鏈鐞嗛〉锛岀敤浜庨槻姝㈣瀹㈤殢鎰忎慨鏀癸紱鍏紑鐨勯潤鎬佹枃浠舵湰韬彲琚洿鎺ヨ鍙栥€?        鑻ヨ鐪熸闃叉浠栦汉绡℃敼绾夸笂鍐呭锛岃鎶婃渶缁堟枃浠堕儴缃插埌鍙闈欐€佹墭绠★紙濡?GitHub Pages / Cloudflare Pages锛夈€?        涓婁紶涓庝繚瀛樹緷璧栨祻瑙堝櫒鐨勩€屾枃浠剁郴缁熻闂€嶈兘鍔涳紙鎺ㄨ崘 Edge/Chrome 鐩存帴鎵撳紑 index.html 鎵€鍦ㄦ枃浠跺す鏃朵娇鐢級锛?        娴忚鍣ㄤ笉鏀寔鏃朵細鑷姩鏀逛负涓嬭浇鏂囦欢銆佹墜鍔ㄦ斁鍏ュ搴旂洰褰曘€?      </p>
+    </section>
+  </main>
+
+  <script src="assets/js/works.js"></script>
+  <script src="assets/js/admin-config.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

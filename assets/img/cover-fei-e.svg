@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" role="img" aria-label="飞蛾">
+  <defs>
+    <linearGradient id="bgF" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2430"/>
+      <stop offset="55%" stop-color="#121820"/>
+      <stop offset="100%" stop-color="#0a0d12"/>
+    </linearGradient>
+    <radialGradient id="glowF" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="rgba(227,192,125,0.16)"/>
+      <stop offset="100%" stop-color="rgba(227,192,125,0)"/>
+    </radialGradient>
+    <radialGradient id="vigF" cx="50%" cy="46%" r="72%">
+      <stop offset="60%" stop-color="rgba(0,0,0,0)"/>
+      <stop offset="100%" stop-color="rgba(2,3,5,0.78)"/>
+    </radialGradient>
+    <filter id="grainF">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.07"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="800" height="500" fill="url(#bgF)"/>
+  <circle cx="400" cy="225" r="230" fill="url(#glowF)"/>
+  <g transform="translate(400 235)">
+    <ellipse cx="0" cy="0" rx="3" ry="17" fill="none" stroke="#e3c07d" stroke-width="1.4"/>
+    <g fill="none" stroke="#c9a25e" stroke-width="1.3">
+      <path d="M -4 -2 C -28 -10, -52 -34, -30 -58 C -16 -72, -8 -50, -4 -22 Z"/>
+      <path d="M 4 -2 C 28 -10, 52 -34, 30 -58 C 16 -72, 8 -50, 4 -22 Z"/>
+      <path d="M -3 6 C -22 12, -38 30, -22 46 C -12 54, -5 38, -3 20 Z"/>
+      <path d="M 3 6 C 22 12, 38 30, 22 46 C 12 54, 5 38, 3 20 Z"/>
+      <path d="M -30 -58 C -26 -50, -18 -48, -16 -56" opacity=".8"/>
+      <path d="M 30 -58 C 26 -50, 18 -48, 16 -56" opacity=".8"/>
+    </g>
+    <path d="M 0 -17 C -3 -8, 3 -8, 0 0" stroke="#e3c07d" stroke-width="1" fill="none"/>
+  </g>
+  <g fill="#c9a25e">
+    <rect x="128" y="104" width="7" height="7" transform="rotate(45 131.5 107.5)"/>
+    <rect x="668" y="136" width="7" height="7" transform="rotate(45 671.5 139.5)"/>
+    <rect x="212" y="386" width="6" height="6" transform="rotate(45 215 389)"/>
+    <rect x="586" y="372" width="6" height="6" transform="rotate(45 589 375)"/>
+    <circle cx="172" cy="256" r="1.8"/>
+    <circle cx="630" cy="262" r="1.8"/>
+    <circle cx="330" cy="96" r="1.5"/>
+    <circle cx="476" cy="352" r="1.5"/>
+  </g>
+  <g fill="none" stroke="#8a6c3d" stroke-width="1">
+    <rect x="14" y="14" width="772" height="472"/>
+    <rect x="19" y="19" width="762" height="462"/>
+  </g>
+  <g fill="#c9a25e">
+    <circle cx="14" cy="14" r="3"/><circle cx="786" cy="14" r="3"/>
+    <circle cx="14" cy="486" r="3"/><circle cx="786" cy="486" r="3"/>
+  </g>
+  <text x="400" y="420" text-anchor="middle" font-family="'STSong', 'SimSun', Georgia, serif" font-size="54" fill="#f0e5c8" letter-spacing="22">飞蛾</text>
+  <text x="400" y="454" text-anchor="middle" font-family="'Courier New', monospace" font-size="12" fill="#c9a25e" letter-spacing="7">№ 03 · 2026</text>
+  <rect width="800" height="500" fill="url(#vigF)"/>
+  <rect width="800" height="500" filter="url(#grainF)"/>
+</svg>

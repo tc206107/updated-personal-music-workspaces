@@ -1,0 +1,54 @@
+# Decap CMS 配置（在线管理）
+# 前提：Netlify 已开启 Identity + Git Gateway，且站点已连接 Git 仓库。
+# 若默认分支不是 main，请修改下方 branch。
+
+backend:
+  name: git-gateway
+  branch: main
+  commit_messages:
+    create: "CMS: 新增作品"
+    update: "CMS: 更新作品"
+    delete: "CMS: 删除作品"
+    uploadMedia: "CMS: 上传素材"
+    deleteMedia: "CMS: 删除素材"
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+locale: "zh_Hans"
+
+collections:
+  - name: "portfolio"
+    label: "作品集"
+    label_singular: "作品"
+    files:
+      - file: "assets/data/works.json"
+        name: "portfolio-data"
+        label: "作品与联系方式"
+        format: "json"
+        fields:
+          - label: "作品列表"
+            name: "works"
+            widget: "list"
+            collapsed: false
+            fields:
+              - { label: "ID（固定，勿改）", name: "id", widget: "hidden" }
+              - { label: "标题", name: "title", widget: "string" }
+              - { label: "年份", name: "year", widget: "string" }
+              - { label: "拍号", name: "timeSig", widget: "string" }
+              - { label: "速度", name: "tempo", widget: "string" }
+              - { label: "配器", name: "instruments", widget: "string" }
+              - { label: "时长", name: "duration", widget: "string" }
+              - { label: "封面路径", name: "cover", widget: "string" }
+              - { label: "音频路径", name: "audio", widget: "string" }
+              - label: "下载文件"
+                name: "downloads"
+                widget: "list"
+                fields:
+                  - { label: "标签（如 MIDI）", name: "label", widget: "string" }
+                  - { label: "路径", name: "href", widget: "string" }
+              - { label: "序号（如 № 01）", name: "index", widget: "string" }
+          - label: "联系方式（每行一条）"
+            name: "contactLines"
+            widget: "list"
+            field: { label: "一行", name: "line", widget: "string" }
