@@ -935,3 +935,244 @@ a { color: inherit; }
   }
   .catalog-index { margin-left: 0; }
 }
+
+/* ============================================================
+   功能性组件（参照参考站）：筛选 / 详情浮层 / 回到顶部 / 移动端菜单
+   ============================================================ */
+
+/* ---------- 回到顶部 ---------- */
+
+.to-top {
+  position: fixed;
+  right: calc(96px + 1.4rem);
+  bottom: 1.6rem;
+  width: 46px;
+  height: 46px;
+  z-index: 55;
+  display: grid;
+  place-items: center;
+  background: rgba(21, 16, 12, .88);
+  color: var(--gold-bright);
+  border: 1px solid var(--gold-dim);
+  cursor: pointer;
+  transform: rotate(45deg);
+  transition: background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
+}
+
+.to-top span { transform: rotate(-45deg); }
+
+.to-top:hover {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+/* ---------- 作品筛选栏 ---------- */
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem;
+  max-width: 980px;
+  margin: 0 auto clamp(1.5rem, 3.5vw, 2.2rem);
+  padding: 0 1rem;
+}
+
+.filter-chip {
+  font-family: var(--mono);
+  font-size: .76rem;
+  letter-spacing: .08em;
+  color: var(--parchment-dim);
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  padding: .42rem .85rem;
+  cursor: pointer;
+  transition: all .25s var(--ease);
+}
+
+.filter-chip:hover {
+  color: var(--gold-bright);
+  border-color: var(--gold-bright);
+}
+
+.filter-chip[aria-pressed="true"] {
+  color: var(--ink);
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+/* ---------- 作品详情浮层 ---------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 1.2rem;
+  background: rgba(9, 7, 5, .82);
+  backdrop-filter: blur(3px);
+}
+
+.modal-panel {
+  position: relative;
+  width: min(760px, 100%);
+  max-height: 88vh;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: minmax(240px, 340px) 1fr;
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--gold-dim);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .65);
+}
+
+.modal-panel::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(201, 162, 94, .35);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.modal-cover {
+  position: relative;
+  min-height: 240px;
+  overflow: hidden;
+  border-right: 1px solid var(--gold-dim);
+}
+
+.modal-cover img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-body {
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-title {
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: .06em;
+  color: var(--parchment);
+  font-size: clamp(1.25rem, 2.6vw, 1.7rem);
+}
+
+.modal-meta {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: .84rem;
+  letter-spacing: .05em;
+  color: var(--gold);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1rem;
+}
+
+.modal-meta .dot { color: var(--gold-dim); }
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .7rem;
+  align-items: center;
+}
+
+.modal-play {
+  font: inherit;
+  font-size: .82rem;
+  letter-spacing: .2em;
+  color: var(--ink);
+  background: var(--gold);
+  border: 1px solid var(--gold);
+  padding: .55rem 1.2rem;
+  cursor: pointer;
+  transition: background .25s var(--ease), color .25s var(--ease);
+}
+
+.modal-play:hover { background: var(--gold-bright); }
+
+.modal-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.modal-download {
+  font-size: .76rem;
+  letter-spacing: .14em;
+  color: var(--parchment-dim);
+  text-decoration: none;
+  border: 1px solid var(--gold-dim);
+  padding: .4rem .75rem;
+  transition: all .25s var(--ease);
+}
+
+.modal-download:hover {
+  color: var(--gold-bright);
+  border-color: var(--gold-bright);
+}
+
+.modal-close {
+  position: absolute;
+  top: .8rem;
+  right: .8rem;
+  z-index: 5;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  background: rgba(16, 12, 8, .72);
+  color: var(--gold-bright);
+  border: 1px solid var(--gold-dim);
+  cursor: pointer;
+  font-size: .9rem;
+}
+
+.modal-close:hover { background: var(--gold); color: var(--ink); }
+
+/* ---------- 移动端菜单 ---------- */
+
+.nav-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  background: transparent;
+  color: var(--gold-bright);
+  border: 1px solid var(--gold-dim);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .masthead { position: relative; }
+  .nav-toggle { display: grid; }
+  .nav {
+    display: none;
+    position: absolute;
+    top: calc(100% + .5rem);
+    right: 1rem;
+    flex-direction: column;
+    gap: .2rem;
+    min-width: 170px;
+    background: rgba(20, 15, 10, .97);
+    border: 1px solid var(--gold-dim);
+    padding: .7rem 1rem;
+    z-index: 65;
+  }
+  .nav.open { display: flex; }
+  .nav a { padding: .55rem .2rem; }
+  .to-top { right: 1rem; bottom: 1rem; }
+  .modal-panel { grid-template-columns: 1fr; }
+  .modal-cover { min-height: 200px; border-right: none; border-bottom: 1px solid var(--gold-dim); }
+}
