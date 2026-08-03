@@ -22,6 +22,7 @@
       <a href="overview.html">总览</a>
       <a href="index.html#about">关于</a>
     </nav>
+    <button class="nav-toggle" type="button" aria-label="菜单" aria-expanded="false">☰</button>
   </header>
 
   <div class="ornament-band" aria-hidden="true"></div>
@@ -35,6 +36,7 @@
         <span class="corner corner-br" aria-hidden="true"></span>
         <h1 class="catalog-heading">作品集</h1>
       </div>
+      <div class="filter-bar" id="filterBar" role="group" aria-label="作品筛选"></div>
       <div class="catalog-list" id="catalogList"></div>
     </section>
   </main>
@@ -52,11 +54,29 @@
     <a class="pb-download" id="pbDownload" download>MIDI</a>
   </div>
 
+  <div class="modal-backdrop" id="workModal" hidden>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-label="作品详情">
+      <button class="modal-close" id="modalClose" type="button" aria-label="关闭">✕</button>
+      <div class="modal-cover"><img id="modalCover" alt=""></div>
+      <div class="modal-body">
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-meta" id="modalMeta"></p>
+        <div class="modal-actions">
+          <button class="modal-play" id="modalPlay" type="button">播放</button>
+          <div class="modal-downloads" id="modalDownloads"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="footer-orn" aria-hidden="true"></div>
+
+  <button class="to-top" id="toTop" type="button" aria-label="回到顶部" hidden><span>↑</span></button>
 
   <script src="assets/js/works.js"></script>
   <script src="assets/js/loader.js"></script>
   <script src="assets/js/player.js"></script>
   <script src="assets/js/catalog.js"></script>
+  <script src="assets/js/ui.js"></script>
 </body>
 </html>
