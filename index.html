@@ -94,15 +94,37 @@
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
     // 处理 Netlify Identity 邮件确认/邀请链接落在首页时的令牌，并自动进入管理页
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", function (user) {
-        if (!user) {
-          window.netlifyIdentity.on("login", function () {
-            document.location.href = "/admin/";
+    (function () {
+      var urls = [
+        "https://cdn.jsdelivr.net/npm/netlify-identity-widget@1.9.2/build/netlify-identity-widget.js",
+        "https://identity.netlify.com/v1/netlify-identity-widget.js"
+      ];
+      function inject(src) {
+        return new Promise(function (resolve, reject) {
+          var s = document.createElement("script");
+          s.src = src;
+          s.onload = resolve;
+          s.onerror = function () { s.remove(); reject(new Error(src)); };
+          document.head.appendChild(s);
+        });
+      }
+      function wire() {
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.on("init", function (user) {
+            if (!user) {
+              window.netlifyIdentity.on("login", function () {
+                document.location.href = "/admin/";
+              });
+            }
           });
         }
-      });
-    }
+      }
+      function next(i) {
+        if (i >= urls.length) return;
+        inject(urls[i]).then(wire, function () { next(i + 1); });
+      }
+      next(0);
+    })();
   </script>
 
 </body>
