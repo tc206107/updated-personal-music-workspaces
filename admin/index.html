@@ -25,17 +25,28 @@
     }
     #cmsError { display: none; }
     #status strong, #cmsError strong { color: #c9a25e; font-weight: 400; letter-spacing: .18em; }
-    .mono { font-family: Consolas, Menlo, monospace; font-size: .76rem; word-break: break-all; color: #c9a25e; }
+    .mono { font-family: Consolas, Menlo, monospace; font-size: .74rem; word-break: break-all; color: #c9a25e; }
+    button {
+      margin-top: 1rem;
+      padding: .5rem 1.2rem;
+      background: transparent;
+      color: #c9a25e;
+      border: 1px solid #8a6c3d;
+      font: inherit;
+      letter-spacing: .12em;
+      cursor: pointer;
+    }
+    button:hover { background: #c9a25e; color: #15100c; }
   </style>
 </head>
 <body>
   <div id="status"><strong>正在加载管理界面</strong><br>请稍候…</div>
   <div id="cmsError">
     <strong>管理界面加载失败</strong><br>
-    请检查网络后刷新重试（Ctrl+F5）。<br>
     <span class="mono" id="failReason"></span><br>
-    若持续出现：确认已把包含 admin/ 文件夹的完整站点重新部署，<br>
+    请检查网络后重试；若持续出现，确认已把包含 admin/ 文件夹的完整站点重新部署，<br>
     并在 Netlify 后台开启 Identity 与 Git Gateway。
+    <br><button type="button" onclick="location.reload()">刷新重试</button>
   </div>
 
   <script>
@@ -71,16 +82,17 @@
         }
       }
 
+      // 国内可达性优先：npmmirror -> jsDelivr -> unpkg / 官方
       var identityUrls = [
-        "https://identity.netlify.com/v1/netlify-identity-widget.js",
+        "https://registry.npmmirror.com/netlify-identity-widget/1.9.2/files/build/netlify-identity-widget.js",
         "https://cdn.jsdelivr.net/npm/netlify-identity-widget@1.9.2/build/netlify-identity-widget.js",
-        "https://registry.npmmirror.com/netlify-identity-widget/1.9.2/files/build/netlify-identity-widget.js"
+        "https://identity.netlify.com/v1/netlify-identity-widget.js"
       ];
 
       var cmsUrls = [
+        "https://registry.npmmirror.com/decap-cms/3.15.1/files/dist/decap-cms.js",
         "https://cdn.jsdelivr.net/npm/decap-cms@^3.0.0/dist/decap-cms.js",
-        "https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js",
-        "https://registry.npmmirror.com/decap-cms/3.15.1/files/dist/decap-cms.js"
+        "https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"
       ];
 
       function tryLoad(urls, check, onAllFailed, onReady) {
@@ -104,15 +116,15 @@
 
       function loadCms() {
         tryLoad(cmsUrls, function () { return !!window.CMS; }, function () {
-          fail("Decap CMS 脚本加载失败（三个备用地址均不可用）");
+          fail("脚本加载失败，已尝试：npmmirror / jsDelivr / unpkg");
         }, function () {
           var st = document.getElementById("status");
           if (st) st.style.display = "none";
         });
       }
 
-      // Netlify Identity 组件：官方地址优先，依次回退到国内可达镜像；
-      // 组件不可用时也继续加载 CMS（Decap 内置 GoTrue 可作兜底）。
+      // Netlify Identity 组件优先加载；组件不可用时也继续加载 CMS
+      // （Decap 内置 GoTrue 可作兜底）。
       tryLoad(
         identityUrls,
         function () { return !!window.netlifyIdentity; },
