@@ -70,73 +70,31 @@
         if (er) er.style.display = "block";
       }
 
-      function registerLoginReload() {
-        if (window.netlifyIdentity) {
-          window.netlifyIdentity.on("init", function (user) {
-            if (!user) {
-              window.netlifyIdentity.on("login", function () {
-                document.location.href = "/admin/";
-              });
-            }
-          });
-        }
-      }
-
-      // 国内可达性优先：npmmirror -> jsDelivr -> unpkg / 官方
-      var identityUrls = [
-        "https://registry.npmmirror.com/netlify-identity-widget/1.9.2/files/build/netlify-identity-widget.js",
-        "https://cdn.jsdelivr.net/npm/netlify-identity-widget@1.9.2/build/netlify-identity-widget.js",
-        "https://identity.netlify.com/v1/netlify-identity-widget.js"
-      ];
-
       var cmsUrls = [
-        "https://registry.npmmirror.com/decap-cms/3.15.1/files/dist/decap-cms.js",
         "https://cdn.jsdelivr.net/npm/decap-cms@^3.0.0/dist/decap-cms.js",
         "https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"
       ];
 
-      function tryLoad(urls, check, onAllFailed, onReady) {
-        function next(i) {
-          if (i >= urls.length) {
-            onAllFailed();
-            return;
-          }
-          inject(urls[i]).then(function () {
-            if (check()) {
-              if (onReady) onReady();
-              return;
-            }
-            next(i + 1);
-          }, function () {
-            next(i + 1);
-          });
+      function loadCms(i) {
+        if (i >= cmsUrls.length) {
+          fail("Decap CMS 脚本加载失败（jsDelivr 与 unpkg 均不可用）");
+          return;
         }
-        next(0);
-      }
-
-      function loadCms() {
-        tryLoad(cmsUrls, function () { return !!window.CMS; }, function () {
-          fail("脚本加载失败，已尝试：npmmirror / jsDelivr / unpkg");
+        inject(cmsUrls[i]).then(function () {
+          if (window.CMS) {
+            var st = document.getElementById("status");
+            if (st) st.style.display = "none";
+          } else {
+            loadCms(i + 1);
+          }
         }, function () {
-          var st = document.getElementById("status");
-          if (st) st.style.display = "none";
+          loadCms(i + 1);
         });
       }
 
-      // Netlify Identity 组件优先加载；组件不可用时也继续加载 CMS
-      // （Decap 内置 GoTrue 可作兜底）。
-      tryLoad(
-        identityUrls,
-        function () { return !!window.netlifyIdentity; },
-        function () {
-          registerLoginReload();
-          loadCms();
-        },
-        function () {
-          registerLoginReload();
-          loadCms();
-        }
-      );
+      // 不加载外部 identity widget，使用 Decap CMS 内置的 GoTrue
+      // 邮箱/密码登录页，避免弹窗因外部脚本加载问题闪退。
+      loadCms(0);
     })();
   </script>
 </body>
