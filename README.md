@@ -82,3 +82,10 @@ assets/
 - 白屏：先 Ctrl+F5 强制刷新；管理页不再依赖外部 identity 组件脚本，使用 Decap 内置登录页；Decap CMS 从 jsDelivr / unpkg 多地址加载，失败时页面会显示具体原因。
 - 登录成功但报 Git Gateway 错误：在 Netlify 后台确认站点已连接 Git 仓库、Identity 与 Git Gateway 均已启用，并重新生成 Git Gateway token。
 - 备注：Netlify Identity 已于 2025-02 宣布弃用（现有站点仍可使用）；若日后失效，可改用 GitHub OAuth 后端（`backend: github` + Netlify OAuth 应用）。
+## 在线管理（GitHub Pages 新方案，推荐）
+
+- 管理地址：`https://tc206107.github.io/updated-personal-music-workspaces/online-admin.html`
+- 桌面快捷方式：`TangCheee 在线管理.url`（双击直达登录界面）
+- 登录密码：与 `local-admin.html` 相同（`tangcheee`）
+- 首次使用：登录后粘贴一个 GitHub 细粒度 PAT（只授权本仓库、Contents 读写；令牌仅保存在浏览器 localStorage，不会上传到任何服务器），点「连接并拉取数据」即可编辑与上传；每次点「保存并发布」直接提交到 main 分支，GitHub Pages 约 1 分钟内自动更新，公网立即生效。
+- 不再依赖 Netlify Identity / Git Gateway；旧 `/admin/`（Decap CMS）仅作为 Netlify 版后台保留。
