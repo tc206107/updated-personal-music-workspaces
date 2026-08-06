@@ -1,24 +1,24 @@
-# TangCheee — 古典作品集
+# 个人作品集源文件，可自作修改后直接使用
 
 1920 年代默剧标题字体 + 波斯地毯花纹的古典风个人作品集。所有曲目可在线播放（真实音频），MIDI/源文件可直接下载。
 
 ## 打开方式
 
 - 本地：直接双击 `index.html`（推荐 Edge / Chrome，离线使用内嵌数据）。
-- 线上（唯一）：`https://tc206107.github.io/updated-personal-music-workspaces/`
+- 线上（唯一）：`你的GitHub仓库地址`
 - 作品总览第二页：`overview.html`（导航「总览」或首页作品集上方的「音乐作品总览」入口）。
 
 ## 在线管理（推荐）
 
-- 管理地址：`https://tc206107.github.io/updated-personal-music-workspaces/online-admin.html`
-- 桌面快捷方式：`TangCheee 在线管理.url`（双击直达登录界面）
-- 登录密码：`tangcheee`（与本地管理页相同）
+- 管理地址：`你仓库克隆存放的地址`
+- 桌面快捷方式：`你的名字 在线管理.url`（双击直达登录界面）
+- 登录密码：`你的密码`（与本地管理页相同）
 - 首次使用：登录后粘贴一个 GitHub 细粒度 PAT（只授权本仓库、Contents 读写；令牌仅保存在浏览器 localStorage，不会上传到任何服务器），点「连接并拉取数据」即可编辑与上传；每次点「保存并发布」直接提交到 `main` 分支，GitHub Pages 约 1 分钟内自动更新，公网立即生效。
-- 不依赖任何第三方托管服务（已移除 Netlify）。
+- 不依赖任何第三方托管服务（初版原有依赖，已移除 Netlify）。
 
 ## 本地管理（local-admin.html，维护本地文件夹）
 
-1. 用 Edge/Chrome 打开本地 `local-admin.html`，输入密码 `tangcheee`（登录后可改）；
+1. 用 Edge/Chrome 打开本地 `local-admin.html`，输入密码 `你的密码`（登录后可改）；
 2. 「选择站点文件夹」选中本地站点文件夹，即可编辑作品、上传音频/MIDI/源文件/封面并保存；
 3. 保存的是 `assets/js/works.js`（内嵌回退数据）；如需线上生效，请用「在线管理」保存发布，或把改动同步进 Git 仓库（同时更新 `assets/data/works.json`）。
 
