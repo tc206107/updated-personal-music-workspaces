@@ -4,39 +4,32 @@
 
 ## 打开方式
 
-- 直接双击 `index.html`（推荐 Edge / Chrome，离线使用内嵌数据）。
-- 线上版：`https://tangcheee.netlify.app/`
+- 本地：直接双击 `index.html`（推荐 Edge / Chrome，离线使用内嵌数据）。
+- 线上（唯一）：`https://tc206107.github.io/updated-personal-music-workspaces/`
 - 作品总览第二页：`overview.html`（导航「总览」或首页作品集上方的「音乐作品总览」入口）。
 
-## 数据是怎么工作的
+## 在线管理（推荐）
 
-- 线上（https）：页面自动读取 `assets/data/works.json` —— 这个文件由 Decap CMS 管理；
-- 本地（file://）：读取失败时自动回退到 `assets/js/works.js` 中的内嵌数据；
-- 因此：线上改内容用 CMS；本地维护旧版文件夹用 `local-admin.html`（写内嵌回退数据）。
-
-## 在线管理（Decap CMS，推荐）
-
-线上访问 `https://tangcheee.netlify.app/admin/` 即可直接增删改作品、上传素材、改联系方式，保存后自动提交到 Git 并发布，**无需重新手动部署**。
-
-首次启用需要完成 Netlify 侧设置（一次性）：
-
-1. 站点必须**连接 Git 仓库**（GitHub/GitLab/Bitbucket），拖拽部署的站点无法使用 Git Gateway；
-2. Netlify 后台 → Site settings → Identity → **Enable Identity**；
-3. Identity → **Enable Git Gateway**；
-4. Identity → Invite users，邀请你自己（邮箱）并接受邀请；
-5. 打开 `https://tangcheee.netlify.app/admin/`，用该邮箱登录即可。
-
-注意：`admin/config.yml` 中 `branch: main`，若你的仓库默认分支不同请修改后重新部署。
+- 管理地址：`https://tc206107.github.io/updated-personal-music-workspaces/online-admin.html`
+- 桌面快捷方式：`TangCheee 在线管理.url`（双击直达登录界面）
+- 登录密码：`tangcheee`（与本地管理页相同）
+- 首次使用：登录后粘贴一个 GitHub 细粒度 PAT（只授权本仓库、Contents 读写；令牌仅保存在浏览器 localStorage，不会上传到任何服务器），点「连接并拉取数据」即可编辑与上传；每次点「保存并发布」直接提交到 `main` 分支，GitHub Pages 约 1 分钟内自动更新，公网立即生效。
+- 不依赖任何第三方托管服务（已移除 Netlify）。
 
 ## 本地管理（local-admin.html，维护本地文件夹）
 
 1. 用 Edge/Chrome 打开本地 `local-admin.html`，输入密码 `tangcheee`（登录后可改）；
 2. 「选择站点文件夹」选中本地站点文件夹，即可编辑作品、上传音频/MIDI/源文件/封面并保存；
-3. 保存的是 `assets/js/works.js`（内嵌回退数据）；如需线上生效，请把改动同步进 Git 仓库（或同时更新 `assets/data/works.json`）。
+3. 保存的是 `assets/js/works.js`（内嵌回退数据）；如需线上生效，请用「在线管理」保存发布，或把改动同步进 Git 仓库（同时更新 `assets/data/works.json`）。
+
+## 数据是怎么工作的
+
+- 线上（https）：页面自动读取 `assets/data/works.json`（在线管理页维护）；
+- 本地（file://）：读取失败时自动回退到 `assets/js/works.js` 中的内嵌数据。
 
 ## 手动新增作品
 
-1. 把音频（mp3/wav）放入 `assets/audio/`，MIDI 放入 `assets/midi/`，源文件放入 `assets/sources/`，封面放入 `assets/img/`（或用 CMS 上传到 `assets/uploads/`，路径写 `/assets/uploads/文件名`）；
+1. 把音频（mp3/wav）放入 `assets/audio/`，MIDI 放入 `assets/midi/`，源文件放入 `assets/sources/`，封面放入 `assets/img/`；
 2. 在 `assets/data/works.json` 的 `works` 数组中追加对象（字段与现有条目一致），并同步 `assets/js/works.js`；
 3. 刷新页面即可。
 
@@ -46,13 +39,10 @@
 index.html                 公开首页
 overview.html              音乐作品总览（第二页，链接直达第三页卡片）
 catalog.html               作品集目录（第三页，阅览格式卡片 + 锚点定位）
-local-admin.html             本地管理页（密码保护，维护本地文件夹）
-admin/
-  index.html               Decap CMS 在线管理入口
-  config.yml               CMS 配置（作品/联系方式字段、Git Gateway）
+online-admin.html          在线管理（密码 + GitHub 令牌，提交到 main 分支）
+local-admin.html           本地管理页（密码保护，维护本地文件夹）
 assets/
-  data/works.json          线上数据源（CMS 管理）
-  uploads/                 CMS 上传的素材
+  data/works.json          线上数据源
   css/styles.css           古典风样式
   js/works.js              内嵌回退数据
   js/loader.js             数据加载器（JSON 优先）
@@ -61,31 +51,19 @@ assets/
   js/overview.js           总览页渲染
   js/catalog.js            目录页渲染与播放
   js/admin.js              本地管理页逻辑
+  js/admin-config.js       管理密码配置（SHA-256 加盐）
+  js/online-admin.js       在线管理页逻辑
   img/ audio/ midi/ sources/
 ```
 
 ## 关于「防止他人修改」
 
-- 线上内容由 Git 仓库 + Netlify Identity/Git Gateway 管理，只有受邀登录的账号能修改并自动产生提交记录；
+- 线上内容由 GitHub 仓库 + 细粒度 PAT 管理，只有持有令牌的人能修改并自动产生提交记录；
 - 本地管理页有密码保护，入口不放在公开首页；
-- 静态文件本身公开可读；如需完全禁止阅读，需要额外鉴权方案（通常不适用于作品集）。
+- 静态文件本身公开可读。
 
 ## 数据说明
 
 - 拍号、速度、配器由源文件解析得到，时长以实际音频文件为准；
 - `marianette.musicxml` 与 `marianette.mid` 为同一作品的两个格式，挂在 marianette 卡片下作为 MusicXML 下载；
 - 音频由本机 MuseScore 4 从各曲目源文件导出。
-
-## 管理页排障（2026-08-01）
-
-- 登录界面闪现后消失：不要使用 `auth_type: pkce`。该配置只适用于自定义 Git Gateway（需配合 `base_url`、`app_id`、`gateway_url` 等 OAuth 参数）；标准 Netlify Identity 流程下会让 Decap 切换到一个缺参数的 PKCE 登录页并报错消失。恢复为标准 `name: git-gateway` 后重新部署即可。
-- 白屏：先 Ctrl+F5 强制刷新；管理页不再依赖外部 identity 组件脚本，使用 Decap 内置登录页；Decap CMS 从 jsDelivr / unpkg 多地址加载，失败时页面会显示具体原因。
-- 登录成功但报 Git Gateway 错误：在 Netlify 后台确认站点已连接 Git 仓库、Identity 与 Git Gateway 均已启用，并重新生成 Git Gateway token。
-- 备注：Netlify Identity 已于 2025-02 宣布弃用（现有站点仍可使用）；若日后失效，可改用 GitHub OAuth 后端（`backend: github` + Netlify OAuth 应用）。
-## 在线管理（GitHub Pages 新方案，推荐）
-
-- 管理地址：`https://tc206107.github.io/updated-personal-music-workspaces/online-admin.html`
-- 桌面快捷方式：`TangCheee 在线管理.url`（双击直达登录界面）
-- 登录密码：与 `local-admin.html` 相同（`tangcheee`）
-- 首次使用：登录后粘贴一个 GitHub 细粒度 PAT（只授权本仓库、Contents 读写；令牌仅保存在浏览器 localStorage，不会上传到任何服务器），点「连接并拉取数据」即可编辑与上传；每次点「保存并发布」直接提交到 main 分支，GitHub Pages 约 1 分钟内自动更新，公网立即生效。
-- 不再依赖 Netlify Identity / Git Gateway；旧 `/admin/`（Decap CMS）仅作为 Netlify 版后台保留。
